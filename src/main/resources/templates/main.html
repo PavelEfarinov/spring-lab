@@ -1,0 +1,113 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>web-lab-4</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div>
+    <a href="/logout"><input type="button" value="Sign Out"></a>
+</div>
+<div id="input-form">
+    <form>
+        <input v-model="xValue" type="checkbox" class="x-box" value="0"> 0
+        <input v-model="xValue" type="checkbox" class="x-box" value="1"> 1
+        <input v-model="xValue" type="checkbox" class="x-box" value="2"> 2
+        <input v-model="xValue" type="checkbox" class="x-box" value="3"> 3 <br>
+        <input v-model="yValue" type="text" class="y-text" autocomplete="false" placeholder="-5...3"> <br>
+        <input type="checkbox" class="r-box" value="1" checked="true"> 1
+        <input type="checkbox" class="r-box" value="2"> 2
+        <input type="checkbox" class="r-box" value="3"> 3 <br>
+        <input type="button" value="send me" @click="sendNewDot()">
+    </form>
+    <div id="error-placeholder" style="color:red">
+        {{validationError}}
+    </div>
+    <input type="button" @click="requestAllDots()" value="where are my dots!!!">
+    <ul v-for="dot in dotsList">
+        <li>{{dot.x[0]}}</li>
+        <li>{{dot.y}}</li>
+        <li>{{dot.r}}</li>
+    </ul>
+</div>
+
+
+<div id="app">
+    <div v-if="isreg != null" @click="reg(this)">
+        Успешная регистрация
+    </div>
+    <input type="button" @click="getGreeting()" value="Load">
+    <!--    {{ message }}-->
+    <ul v-for="greet in greeting">
+        <li v-for="field in greet">{{field}}</li>
+    </ul>
+</div>
+
+</body>
+<script type="application/javascript">
+
+    var dotsController = new Vue({
+        el: '#input-form',
+        data: {
+            xValue: [],
+            yValue: '',
+            rValue: 1,
+            validationError: '',
+            dotsList: [],
+            url: {
+                dotAdder: '/dots'
+            }
+        },
+        methods: {
+            sendNewDot() {
+                axios.post(this.url.dotAdder, {
+                    x: this.xValue,
+                    y: this.yValue,
+                    r: this.rValue
+                }).then((response) => {
+                    this.validationError = response.data;
+                    console.log(response.data);
+                });
+            },
+            requestAllDots() {
+                axios.get(this.url.dotAdder).then((response) => {
+                    this.dotsList = response.data;
+                    console.log(response.data);
+                });
+            }
+        }
+    });
+
+    let urlP = new URLSearchParams(window.location.search);
+
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            greeting: [],
+            isreg: urlP.get("reg"),
+            url: {
+                greeting: '/greeting?name=kd'
+            }
+        },
+        methods: {
+            getGreeting() {
+                axios.get(this.url.greeting).then((response) => {
+                    console.log(response.data);
+                    this.greeting.push(response.data);
+                });
+            },
+            reg(el){
+                setTimeout(function () {
+                    el.style.opacity = 0;
+                }, 1000);
+            }
+        }
+    });
+
+    if (urlP.get("reg")) {
+        app['isreg'] = true
+    }
+</script>
+</html>

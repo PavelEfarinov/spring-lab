@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Sing up</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+</head>
+<body>
+<div class="container" id="container">
+    <form class="form-signin" method="post" action="/registration">
+        <h2 class="form-signin-heading">Registration</h2>
+        <div v-if="error != null" class="alert alert-danger">{{err_msg}}</div>
+        <p>
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
+                   autofocus>
+        </p>
+        <p>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+
+    </form>
+    <form class="form-signin">
+        <a href="login">
+            <button class="btn btn-outline-info btn-block" type="button">Sign ip</button>
+        </a>
+    </form>
+</div>
+</div>
+</body>
+<script type="application/javascript">
+    let urlP = new URLSearchParams(window.location.search);
+    new Vue({
+        el: '#container',
+        data: {
+            error: urlP.get('error'),
+            err_msg: 'Registration failed. User exist',
+        }
+    });
+</script>
+</html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+<!--    <meta name="description" content="">-->
+<!--    <meta name="author" content="">-->
+<!--    <title>Sing up</title>-->
+<!--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"-->
+<!--          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">-->
+<!--    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<!--    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="container">-->
+<!--    <form class="form-signin">-->
+<!--        <h2 class="form-signin-heading">Registration</h2>-->
+<!--        <div v-if="error != null" class="alert alert-danger">{{err_msg}}</div>-->
+<!--        <p>-->
+<!--            <label for="username" class="sr-only">Username</label>-->
+<!--            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required-->
+<!--                   autofocus>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label for="password" class="sr-only">Password</label>-->
+<!--            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>-->
+<!--        </p>-->
+<!--        <button class="btn btn-info btn-lg btn-block" type="button" @click="sendSome()">Register</button>-->
+<!--    </form>-->
+
+<!--    <form class="form-signin">-->
+<!--        <a href="login">-->
+<!--            <button class="btn btn-outline-primary btn-block" type="button">Sign in</button>-->
+<!--        </a>-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+
+<!--<script type="application/javascript">-->
+<!--    let urlP = new URLSearchParams(window.location.search);-->
+<!--    new Vue({-->
+<!--        el: '#container',-->
+<!--        data: {-->
+<!--            login: '',-->
+<!--            password: '',-->
+<!--            error: urlP.get('error'),-->
+<!--            err_msg: 'Registration failed. User exist',-->
+<!--            logout_msg: ''-->
+<!--        },-->
+<!--        methods: { sendSome () {-->
+<!--                axios.post('',{username: this.login, password: this.password}).then((response) => {-->
+<!--                    console.log(response.data);//TODO send user registration data-->
+<!--            });-->
+<!--            }-->
+<!--        }-->
+<!--    })-->
+<!--</script>-->
+<!--</html>-->
