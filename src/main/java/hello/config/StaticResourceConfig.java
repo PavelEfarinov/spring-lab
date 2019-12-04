@@ -11,11 +11,12 @@ public class StaticResourceConfig implements WebMvcConfigurer {
             "classpath:/resources/", "classpath:/resources/static/",
             "classpath:/static/", "classpath:/public/"};
 
-    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS)
                 .setCacheControl(CacheControl.noCache())
                 .setCachePeriod(0);
+        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+//        registry.addResourceHandler("/*.html").addResourceLocations("/WEB-INF/");
     }
 }

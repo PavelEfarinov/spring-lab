@@ -1,0 +1,202 @@
+* {
+    margin: o;
+    padding: 0;
+    font-size: 1em;
+}
+
+body {
+    background-color: #F1EFEF;
+    color: white;
+    width: 100%;
+    display: flex;
+    overflow-x: hidden;
+    flex-direction: column;
+    font-family: "Exo", sans-serif;
+    font-size: 2vh;
+
+}
+
+html,
+body {
+    height: 100%;
+}
+
+#clock {
+    text-align: center;
+    color: #2B2A2A;
+    margin: 0 auto;
+    font-size: 50vh;
+    font-family: 'Pacifico', cursive;
+}
+
+/*body, html, p, #footer, div {*/
+/*    width: 100%;*/
+/*    text-align: left;*/
+/*}*/
+
+footer {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    min-width: 100vw;
+    background: #2B2A2A;
+    color: white;
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    /*height: 80px;*/
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 110%;
+    position: absolute;
+}
+
+/*.plot {*/
+/*    display: flex;*/
+/*    width: 300px;*/
+/*    height: 300px;*/
+/*    !*min-width: 350px;*!*/
+/*    !*min-height: 350px;*!*/
+/*    margin: 1% auto;*/
+/*    background-color: white;*/
+/*    padding: 2%;*/
+/*    border: 3px solid black;*/
+/*    border-radius: 40px;*/
+/*}*/
+.plot{
+    background-color: white;
+    border: 2px solid #690e90;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px auto;
+    max-height: 320px;
+}
+
+svg {
+    margin: auto auto;
+    display: block;
+    text-align: right;
+    background-color: white;
+
+}
+
+svg line {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: dash 1s 0s linear forwards;
+
+}
+
+svg rect:hover, polygon:hover, path:hover {
+    fill: blue;
+    transition-duration: 0.4s;
+}
+
+svg circle {
+    animation: appear 0.5s 0s linear forwards;
+    transition-duration: 0.6s;
+
+}
+
+@keyframes full-opacity-anim {
+    from {
+        fill-opacity: 0;
+    }
+    to {
+        stroke-dashoffset: 0;
+        fill-opacity: 1;
+    }
+}
+
+@keyframes appear {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes dash {
+    0% {
+        fill-opacity: 0;
+    }
+    50% {
+        fill-opacity: .10;
+    }
+    60% {
+        fill-opacity: .15;
+    }
+    70% {
+        fill-opacity: .20;
+    }
+    80% {
+        fill-opacity: .35;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+        fill-opacity: .40;
+    }
+}
+
+tbody {
+    min-width: 300px;
+    min-height: 300px;
+    width: 15vh;
+}
+
+tr {
+    height: 15vh;
+    min-height: 50px;
+}
+
+td {
+    min-width: 15vh;
+    min-height: 50px;
+}
+
+table {
+    background-color: #ff33cc;
+}
+
+.table-container{
+    width: 100%;
+    padding: 10px;
+}
+
+.res-table {
+    width: 100%;
+    background: #B1AEAE;
+    line-height: 2;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    margin: 20px auto;
+}
+.res-table caption {
+    background: #2B2A2A;
+}
+.res-table + tr {
+    background: dimgray;
+}
+
+.err-msg{
+    border-radius: 4px;
+    width: 100%;
+    height: 20px;
+    padding: 10px;
+    text-transform: uppercase;
+    background: rgba(255, 98, 97, 0.78);
+    color: #c9302c;
+    animation: dash 1s 0s linear forwards;
+    transition-duration: 0.2s;
+}

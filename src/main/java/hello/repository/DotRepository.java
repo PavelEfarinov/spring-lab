@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface DotRepository extends JpaRepository<Dot, Long> {
     List<Dot> findAllByOwner(User byUsername);
+    void deleteAllByOwner(User byUsername);
 }

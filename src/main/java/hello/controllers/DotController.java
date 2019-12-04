@@ -42,8 +42,12 @@ public class DotController {
     @GetMapping("/dots")
     @ResponseBody
     public List<DotDTO> getAllDots(Principal principal) {
-        List<DotDTO> dotList = dotDTOService.loadUserDots(principal.getName());
-        return dotList;
+        return dotDTOService.loadUserDots(principal.getName());
     }
 
+    @RequestMapping("/clear")
+    @ResponseBody
+    void clear(Principal principal) {
+        //TODO метод удаления точек пользователя
+    }
 }

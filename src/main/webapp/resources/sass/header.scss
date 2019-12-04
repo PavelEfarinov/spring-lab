@@ -1,0 +1,130 @@
+// Demo Reusables
+$cubic-bezier: cubic-bezier(0.215, 0.61, 0.355, 1);
+$font: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+$header-height: 40px;
+
+// Calc
+@mixin calc($property, $value) {
+  #{$property}: -webkit-calc(#{$value});
+  #{$property}:    -moz-calc(#{$value});
+  #{$property}:         calc(#{$value});
+}
+
+// Fonts
+%font-bold {
+  font-weight: 700;
+}
+
+%font-light {
+  font-weight: 300;
+  letter-spacing: .15em;
+}
+
+%font-regular {
+  font-family: $font;
+  font-weight: 400;
+}
+
+// Crispy/Better Font Rendering
+%text-crispy {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Demo Styles
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @extend %font-regular;
+  // @extend %text-crispy;
+  background-color: #F4F4F4;
+  color: #2b2b2b;
+  font-size: 14px;
+  letter-spacing: .1em;
+  text-align: center;
+}
+
+body, html, article {
+  height: 100%;
+}
+
+// Page Header
+.article-header {
+  background-color: #E31E25;
+  color: white;
+  display: flex;
+  flex-flow: column;
+  height: 80%;
+  justify-content: center;
+  line-height: 1.3;
+  min-height: 200px;
+  padding: 2em 4% 2em;
+  @include calc('padding-top', '2em + #{$header-height}');
+}
+
+.article-section {
+  line-height: 200%;
+  margin: 0 auto;
+  max-width: 680px;
+  padding: 3em 2em 100vh;
+  text-align: justify;
+}
+
+.article-subtitle {
+  @extend %font-light;
+  font-style: italic;
+  display: block;
+}
+
+.article-title {
+  @extend %font-light;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.header-bar {
+  display: flex;
+  font-size: 12px;
+  justify-content: space-between;
+  text-transform: uppercase;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+// Fixed Header (Layout Stuff & Animations)
+// [data-animate-header]
+[data-animate-header] { // use class selector in production
+  background-color: #1b1b1b;
+  left: 0;
+  padding: 12px 10px 11px; // 40px
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  // Hide the header offscreen so we can transition it in later
+  .header-past & {
+    position: fixed;
+    top: -$header-height;
+  }
+
+  // Hide the header (slideUp)
+  .header-past.header-hide & {
+    top: -$header-height;
+    transition: top .85s $cubic-bezier;
+  }
+
+  // Show the header (slideDown)
+  .header-show & {
+    top: 0;
+    transition: top .85s $cubic-bezier;
+  }
+}
