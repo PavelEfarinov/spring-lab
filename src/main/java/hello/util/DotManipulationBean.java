@@ -32,9 +32,6 @@ public class DotManipulationBean {
         double x = dot.getX();
         double y = dot.getY();
         double r = dot.getR();
-//        if ((x <= 0 && x >= -r && y >= 0 && y <= r / 2) ||
-//                (x >= 0 && y >= 0 && r - x * 2 >= y) ||
-//                (x >= 0 && y <= 0 && x * x + y * y <= r * r))
         return (x >= -r) && (x <= 0) && (y <= 0.5 * r) && (y >= 0) ||
                 (-2 * x + r >= y) && (x >= 0) && (y >= 0) && (x <= r * 0.5) ||
                 (x * x + y * y <= r * r) && (y <= 0) && (x >= 0);

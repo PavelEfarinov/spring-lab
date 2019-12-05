@@ -4,14 +4,11 @@
     <title>web-lab-4</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!--    <link rel="stylesheet" type="text/css" href="style.css">-->
-    <!--    <link rel="stylesheet" type="text/css" href="table-style.css">-->
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
     <link rel="stylesheet" type="text/css" href="/resources/css/beautiful-check-boxes.css">
     <link rel="stylesheet" type="text/css" href="/resources/css/form-style.css">
     <link rel="stylesheet" type="text/css" href="/resources/css/background.css">
     <link rel="stylesheet" type="text/css" href="/resources/css/header.css">
-    <!--    <link rel="stylesheet" type="text/css" href="/resources/css/textinput.css">-->
     <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
 
 </head>
@@ -23,8 +20,13 @@
         <a href='/logout' class='btn-search' data-toggle-class='search-active'>Log out</a>
     </menu>
 </header>
-<div class="wrapper">
-    <div class="container" id="app">
+<div class="wrapper" id="app">
+    <div style="padding: 10px; margin: 10px auto; position: relative; top:100px ">
+        <transition name="slide-fade">
+            <label v-show="was_reg" class="ok-msg msg">Registration success</label>
+        </transition>
+    </div>
+    <div class="container">
         <div class="plot" @click="sendPlotDot()">
             <svg version="1.1"
                  baseProfile="full"
@@ -62,7 +64,7 @@
                         L 150 270
                         A 120 120, 0, 0, 0, 270 150 Z" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"></path>
                 <template v-for="dot in dotsList">
-                    <circle v-bind:cr="rValue" :cx="dot.x[0]*120/rValue + 150" :cy="150 - (dot.y*120/rValue)" r="3"
+                    <circle :cr="rValue" :cx="dot.x[0]*120/rValue + 150" :cy="150 - (dot.y*120/rValue)" r="3"
                             :fill="setDotColor(dot)"
                             :stroke="setDotColor(dot)"></circle>
                 </template>
@@ -147,7 +149,6 @@
                 </div>
 
             </form>
-
             <div style="padding: 10px; margin: 10px">
                 <transition name="fade">
                     <label v-show="!text_valid" id="error-message" class="err-msg msg">{{text_err_msg}}</label>
@@ -179,8 +180,6 @@
                     <td>{{round(dot.y)}}</td>
                     <td>{{dot.r}}</td>
                     <td>{{dot.result}}</td>
-                    <!--                    <td v-if="dot.result">TRUE</td>-->
-                    <!--                    <td v-else>FALSE</td>-->
                 </tr>
             </table>
         </div>
@@ -192,6 +191,9 @@
         return !isNaN(parseFloat(n)) && !isNaN(n - 0)
     }
 
+    let urlP = new URLSearchParams(window.location.search);
+
+
     var app = new Vue({
         el: '#app',
         data: {
@@ -200,6 +202,7 @@
             rValue: 1,
             r_valid: true,
             text_valid: false,
+            was_reg: urlP.get('reg') != null,
             valid: this.r_valid && this.text_valid,
             r_err_msg: "CHOOSE ONE R",
             text_err_msg: "Y IS REQUIRED",
@@ -308,12 +311,17 @@
                 } else {
                     return "green";
                 }
+            },
+
+            setWasReg(flag) {
+                this.was_reg = flag;
             }
         },
         created: function () {
             this.requestAllDots();
         },
         beforeUpdate: function () {
+            setTimeout(this.setWasReg(false), 1000);
             this.validText();
             this.valid = this.r_valid && this.text_valid
         }
@@ -333,24 +341,7 @@
     }
 
     function checkTriangle(x, y, r) {
-        // console.log("check triangle", ((-2 * x + r) >= y) && (x >= 0) && (y >= 0));
         return (y <= (r - 2 * x)) && (x >= 0) && (y >= 0);
-    }
-
-
-    function getR() {
-        let checkboxList = document.querySelectorAll(".r-box");
-        let num = 0;
-        let isCheck = false;
-        checkboxList.forEach(function (checkbox) {
-            if (!isCheck) {
-                num++;
-            }
-            if (checkbox.checked) {
-                isCheck = true;
-            }
-        });
-        return num;
     }
 </script>
 </html>

@@ -3,6 +3,7 @@ package hello.controllers;
 import hello.domain.UserDTO;
 import hello.service.UserDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
