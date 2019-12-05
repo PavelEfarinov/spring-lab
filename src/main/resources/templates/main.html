@@ -62,7 +62,7 @@
                         L 150 270
                         A 120 120, 0, 0, 0, 270 150 Z" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"></path>
                 <template v-for="dot in dotsList">
-                    <circle :cx="dot.x[0]*120/dot.r + 150" :cy="150 - (dot.y*120/dot.r)" r="3" fill="#AD2D2D"
+                    <circle v-bind:class="getR(dot)" :cx="dot.x[0]*120/dot.r + 150" :cy="150 - (dot.y*120/dot.r)" r="3"  fill="#AD2D2D"
                             stroke="#AD2D2D"></circle>
                 </template>
             </svg>
@@ -236,6 +236,10 @@
                 }
             },
 
+            getR(dot){
+                return dot.r;
+            },
+
             validText() {
                 let text = this.yValue.replace(/,/, '.');
                 if (text === '') {
@@ -337,7 +341,7 @@
             let x = (-150 + x_dot);
             y = y * R;
             x = x * R;
-            R = getR();
+            R = this.rValue;
             y = y / R;
             x = x / R;
             x_dot = x + 150;
