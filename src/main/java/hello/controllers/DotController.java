@@ -48,6 +48,6 @@ public class DotController {
     @RequestMapping("/clear")
     @ResponseBody
     void clear(Principal principal) {
-        //TODO метод удаления точек пользователя
+        dotDTOService.deleteUserDots(principal.getName());
     }
 }

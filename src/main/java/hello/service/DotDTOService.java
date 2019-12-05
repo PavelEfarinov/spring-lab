@@ -40,4 +40,8 @@ public class DotDTOService {
         return toClient;
     }
 
+    public void deleteUserDots(String name) {
+        dotRepository.deleteAllByOwner(userRepository.findByUsername(name));
+    }
+
 }

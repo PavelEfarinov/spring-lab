@@ -28,16 +28,16 @@ public class UserDTOService implements UserDetailsService {
         return userRepository.countByUsername(login) == 0;
     }
 
-    public UserDTO findByLoginAndPassword(String login, String password) {
-        return new UserDTO(login == null || password == null ? null : userRepository.findByUsernameAndPassword(login, password));
-    }
-
-    public UserDTO findById(Long id) {
-        return new UserDTO(id == null ? null : userRepository.findById(id).orElse(null));
-    }
+//    public UserDTO findByLoginAndPassword(String login, String password) {
+//        return new UserDTO(login == null || password == null ? null : userRepository.findByUsernameAndPassword(login, password));
+//    }
+//
+//    public UserDTO findById(Long id) {
+//        return new UserDTO(id == null ? null : userRepository.findById(id).orElse(null));
+//    }
 
     @Override
     public UserDTO loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new UserDTO(userRepository.findByUsername(username));//TODO implementation of loading userDTO from DB
+        return new UserDTO(userRepository.findByUsername(username));
     }
 }
