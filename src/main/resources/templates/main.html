@@ -62,8 +62,8 @@
                         L 150 270
                         A 120 120, 0, 0, 0, 270 150 Z" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"></path>
                 <template v-for="dot in dotsList">
-                    <circle v-bind:cr="this.rValue":cx="dot.x[0]*120/rValue + 150" :cy="150 - (dot.y*120/rValue)" r="3"  fill="#AD2D2D"
-                            stroke="#AD2D2D"></circle>
+                    <circle v-bind:cr="rValue":cx="dot.x[0]*120/rValue + 150" :cy="150 - (dot.y*120/rValue)" r="3"  :fill="setDotColor(dot)"
+                            :stroke="setDotColor(dot)"></circle>
                 </template>
             </svg>
         </div>
@@ -193,7 +193,7 @@
             dotsList: [],
             url: {
                 dotAdder: '/dots',
-                dorClear: '/clear'
+                dotClear: '/clear'
             }
         },
         methods: {
@@ -205,23 +205,23 @@
                     if (checkbox !== event.target) {
                         checkbox.checked = false;
                     }
+
                     if (checkbox.checked) {
                         count++;
                     }
                 });
-                for (const checkbox of checkboxList)
-                {
+                for (const checkbox of checkboxList) {
                     if (checkbox.checked) {
                         this.rValue = checkbox.getAttribute('value');
                     }
                 }
                 this.r_valid = (count === 1);
                 if (this.r_valid) {
-                    this.changeDotPos()
+                    //this.changeDotPos()
                 }
             },
 
-            getRFromDot(dot){
+            getRFromDot(dot) {
                 return dot.r;
             },
 
@@ -237,7 +237,6 @@
                 } else this.text_valid = true;
             },
 
-            //TODO fix dot send
             sendPlotDot() {
                 const plot_container = document.getElementById("svg-plot");
                 let rect = plot_container.getBoundingClientRect();
@@ -249,20 +248,6 @@
                     let R = this.rValue;
                     y = y / 120 * R;
                     x = x / 120 * R;
-                    let dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    dot.setAttribute("r", "3");
-                    dot.setAttribute("cx", Math.round(x_dot));
-                    dot.setAttribute("cy", Math.round(y_dot));
-                    document.getElementById("svg-plot").appendChild(dot);
-                    if (!check(x, y, R)) {
-                        dot.setAttribute("stroke", "#AD2D2D");
-                        dot.setAttribute("fill", "#AD2D2D");
-                    } else {
-                        dot.setAttribute("stroke", "green");
-                        dot.setAttribute("fill", "green");
-                    }
-                    dot.setAttribute("cr", R);
-                    console.log(x + " " + y + " " + R);
                     let oldX = this.xValue;
                     let oldY = this.yValue;
                     this.xValue = [x];
@@ -298,37 +283,15 @@
                     console.log(response.data);
                 });
             },
-            changeDotPos() {
-                let dotsList = document.querySelectorAll("circle");
-                console.log(dotsList);
-                let newR = this.rValue;
-                dotsList.forEach(function (dot) {
-                    let x_dot = parseInt(dot.getAttribute("cx"));
-                    let y_dot = dot.getAttribute("cy");
-                    let R = dot.getAttribute("cr");
-                    let y = (150 - y_dot);
-                    let x = (-150 + x_dot);
-                    y = y * R;
-                    x = x * R;
-                    R = newR;
-                    y = y / R;
-                    x = x / R;
-                    x_dot = x + 150;
-                    y_dot = 150 - y;
-                    if (!check((-150 + x_dot) / 120 * R, (150 - y_dot) / 120 * R, R)) {
-                        dot.setAttribute("stroke", "#AD2D2D");
-                        dot.setAttribute("fill", "#AD2D2D");
-                    } else {
-                        dot.setAttribute("stroke", "green");
-                        dot.setAttribute("fill", "green");
-                    }
-                    dot.setAttribute("cx", Math.round(x_dot));
-                    dot.setAttribute("cy", Math.round(y_dot));
-                    dot.setAttribute("cr", R);
-                })
+
+            setDotColor(dot) {
+                if (!check(dot.x, dot.y, this.rValue)) {
+                    return "#AD2D2D";
+                } else {
+                    return "green";
+                }
             }
         },
-
         created: function () {
             this.requestAllDots();
         },
