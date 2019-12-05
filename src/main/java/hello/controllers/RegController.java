@@ -1,7 +1,7 @@
 package hello.controllers;
 
-import hello.domain.User;
-import hello.repository.UserRepository;
+import hello.domain.UserDTO;
+import hello.service.UserDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,18 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 public class RegController {
 
     @Autowired
-    private UserRepository userRepo;
+    private UserDTOService userDTOService;
 
     @RequestMapping("/registration")
-    public void addUser(User user,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User userDB = userRepo.findByUsername(user.getUsername());
-
-        if (userDB != null){
+    public void addUser(UserDTO user, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (!userDTOService.isLoginVacant(user.getUsername())) {
             response.sendRedirect("/reg?error");
-            return;
+        } else {
+            userDTOService.register(user);
+            request.login(user.getUsername(), user.getPassword());
+            response.sendRedirect("/main?reg");
         }
-        userRepo.save(user);
-        request.login(user.getUsername(), user.getPassword());
-        response.sendRedirect("/main?reg");
     }
 }

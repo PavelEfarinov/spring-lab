@@ -62,8 +62,8 @@
                         L 150 270
                         A 120 120, 0, 0, 0, 270 150 Z" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"></path>
                 <template v-for="dot in dotsList">
-                    <circle v-bind:class="getR(dot)" :cx="dot.x[0]*120/dot.r + 150" :cy="150 - (dot.y*120/dot.r)" r="3"  fill="#AD2D2D"
-                            stroke="#AD2D2D"></circle>
+                    <circle v-bind:cr="rValue":cx="dot.x[0]*120/rValue + 150" :cy="150 - (dot.y*120/rValue)" r="3"  :fill="setDotColor(dot)"
+                            :stroke="setDotColor(dot)"></circle>
                 </template>
             </svg>
         </div>
@@ -88,7 +88,7 @@
                         <span class="toggle__label"><span class="toggle__text">-0.5</span></span></label>
                     </div>
                     <div class="check-box"><label class="toggle">
-                        <input v-model="xValue" class="toggle__input x-box" type="checkbox" value="1">
+                        <input v-model="xValue" class="toggle__input x-box" type="checkbox" value="0">
                         <span class="toggle__label"><span class="toggle__text">0</span></span></label>
                     </div>
                     <div class="check-box"><label class="toggle">
@@ -117,29 +117,12 @@
                 <!-- R CHECKBOXES               -->
                 <div class="check-box-container .r-container">
                     <label style="width: 100%">R</label>
-
-                    <div class="check-box"><label class="toggle">
-                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="-2">
-                        <span class="toggle__label"><span class="toggle__text">-2</span></span></label>
-                    </div>
-                    <div class="check-box"><label class="toggle">
-                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="-1.5">
-                        <span class="toggle__label"><span class="toggle__text">-1.5</span></span></label>
-                    </div>
-                    <div class="check-box"><label class="toggle">
-                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="-1">
-                        <span class="toggle__label"><span class="toggle__text">-1</span></span></label>
-                    </div>
-                    <div class="check-box"><label class="toggle">
-                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="-0.5">
-                        <span class="toggle__label"><span class="toggle__text">-0.5</span></span></label>
-                    </div>
                     <div class="check-box"><label class="toggle">
                         <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="0.5">
                         <span class="toggle__label"><span class="toggle__text">0.5</span></span></label>
                     </div>
                     <div class="check-box"><label class="toggle">
-                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="1">
+                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="1" checked = "true">
                         <span class="toggle__label"><span class="toggle__text" checked>1</span></span></label>
                     </div>
                     <div class="check-box"><label class="toggle">
@@ -172,10 +155,6 @@
             <div id="error-placeholder" class="err-msg" style="color:red; padding: 10px">
                 {{validationError}}
             </div>
-            <!--            <input type="button" @click="requestAllDots()" value="where are my dots!!!">-->
-            <!--            <ul v-for="dot in dotsList">-->
-            <!--                <li>{{dot.x[0]}} {{dot.y}} {{dot.r}}</li>-->
-            <!--            </ul>-->
         </div>
         <div class="table-container">
             <table class="res-table">
@@ -214,7 +193,7 @@
             dotsList: [],
             url: {
                 dotAdder: '/dots',
-                dorClear: '/clear'
+                dotClear: '/clear'
             }
         },
         methods: {
@@ -226,24 +205,30 @@
                     if (checkbox !== event.target) {
                         checkbox.checked = false;
                     }
+
                     if (checkbox.checked) {
                         count++;
                     }
                 });
+                for (const checkbox of checkboxList) {
+                    if (checkbox.checked) {
+                        this.rValue = checkbox.getAttribute('value');
+                    }
+                }
                 this.r_valid = (count === 1);
                 if (this.r_valid) {
-                    changeDotPos()
+                    //this.changeDotPos()
                 }
             },
 
-            getR(dot){
+            getRFromDot(dot) {
                 return dot.r;
             },
 
             validText() {
                 let text = this.yValue.replace(/,/, '.');
                 if (text === '') {
-                    this.text_err_msg = "y is required";
+                    this.text_err_msg = "Y is required";
                     this.text_valid = false;
                 } else if (!isNumber(text)) {
                     this.text_err_msg = "Y need to be a number";
@@ -252,12 +237,6 @@
                 } else this.text_valid = true;
             },
 
-            // validText() {
-            //     let text = this.yValue.replace(/,/, '.');
-            //     return !isNumber(this.yValue.replace(/,/, '.')) && ((this.yValue.replace(/,/, '.') > -5) && (this.yValue.replace(/,/, '.') < 3));
-            // },
-
-            //TODO fix dot send
             sendPlotDot() {
                 const plot_container = document.getElementById("svg-plot");
                 let rect = plot_container.getBoundingClientRect();
@@ -269,28 +248,13 @@
                     let R = this.rValue;
                     y = y / 120 * R;
                     x = x / 120 * R;
-                    let dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    dot.setAttribute("r", "3");
-                    dot.setAttribute("cx", Math.round(x_dot));
-                    dot.setAttribute("cy", Math.round(y_dot));
-                    document.getElementById("svg-plot").appendChild(dot);
-                    if (!check(x, y, R)) {
-                        dot.setAttribute("stroke", "#AD2D2D");
-                        dot.setAttribute("fill", "#AD2D2D");
-                    } else {
-                        dot.setAttribute("stroke", "green");
-                        dot.setAttribute("fill", "green");
-                    }
-                    dot.setAttribute("class", R);
-                    console.log(x + " " + y + " " + R);
-                    axios.post(this.url.dotAdder, {
-                        x: x,
-                        y: y,
-                        r: R
-                    }).then((response) => {
-                        this.validationError = response.data;
-                        console.log(response.data);
-                    });
+                    let oldX = this.xValue;
+                    let oldY = this.yValue;
+                    this.xValue = [x];
+                    this.yValue = y;
+                    this.sendNewDot();
+                    this.xValue = oldX;
+                    this.yValue = oldY;
                 }
             },
 
@@ -302,11 +266,12 @@
                 }).then((response) => {
                     this.validationError = response.data;
                     console.log(response.data);
+                    this.requestAllDots();
                 });
             },
 
             deleteUserDots() {
-                axios.get(this.url.dotClear).then((response) => {
+                axios.post(this.url.dotClear).then((response) => {
                     console.log(response.data);
                     this.requestAllDots();
                 });
@@ -317,48 +282,24 @@
                     this.dotsList = response.data;
                     console.log(response.data);
                 });
+            },
+
+            setDotColor(dot) {
+                if (!check(dot.x, dot.y, this.rValue)) {
+                    return "#AD2D2D";
+                } else {
+                    return "green";
+                }
             }
         },
         created: function () {
             this.requestAllDots();
         },
-        updated: function () {
+         beforeUpdate: function () {
             this.validText();
             this.valid = this.r_valid && this.text_valid
         }
     });
-
-    //TODO пофиксить перерисовку точек
-    function changeDotPos(R) {
-        let dotsList = document.querySelectorAll("circle");
-        console.log(dotsList);
-        dotsList.forEach(function (dot) {
-            let x_dot = parseInt(dot.getAttribute("cx"));
-            let y_dot = dot.getAttribute("cy");
-            console.log(x_dot);
-            let R = dot.getAttribute("class");
-            let y = (150 - y_dot);
-            let x = (-150 + x_dot);
-            y = y * R;
-            x = x * R;
-            R = this.rValue;
-            y = y / R;
-            x = x / R;
-            x_dot = x + 150;
-            y_dot = 150 - y;
-            if (!check((-150 + x_dot) / 120 * R, (150 - y_dot) / 120 * R, R)) {
-                dot.setAttribute("stroke", "#AD2D2D");
-                dot.setAttribute("fill", "#AD2D2D");
-            } else {
-                dot.setAttribute("stroke", "green");
-                dot.setAttribute("fill", "green");
-            }
-            dot.setAttribute("cx", Math.round(x_dot));
-            dot.setAttribute("cy", Math.round(y_dot));
-            dot.setAttribute("class", R);
-
-        })
-    }
 
     function check(x, y, r) {
         return checkCircle(x, y, r) || checkRectangle(x, y, r) || checkTriangle(x, y, r);
