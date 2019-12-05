@@ -16,7 +16,7 @@
 
 </head>
 
-<body>
+<body style="font-size: 14px">
 <header class='header' data-animate-header-container>
     <menu class='header-bar' data-animate-header>
         <a href='/home' class='btn-menu' data-toggle-class='menu-active'>Index</a>
@@ -56,13 +56,14 @@
                 <line x1="148" y1="270" x2="152" y2="270" stroke="#000720"/>
                 <text x="156" y="275">-R</text>
                 <!-- фигуры в центре -->
-                <rect x="90" y="30" width="60" height="120" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"/>
-                <polygon points="150,150 150,210 90,150" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"/>
+                <rect x="30" y="90" width="120" height="60" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"/>
+                <polygon points="150,150 150,30 210,150" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"/>
                 <path d="M150 150
                         L 150 270
                         A 120 120, 0, 0, 0, 270 150 Z" fill="#75A9D5" fill-opacity="0.4" stroke="#986E6E"></path>
                 <template v-for="dot in dotsList">
-                    <circle v-bind:cr="rValue":cx="dot.x[0]*120/rValue + 150" :cy="150 - (dot.y*120/rValue)" r="3"  :fill="setDotColor(dot)"
+                    <circle v-bind:cr="rValue" :cx="dot.x[0]*120/rValue + 150" :cy="150 - (dot.y*120/rValue)" r="3"
+                            :fill="setDotColor(dot)"
                             :stroke="setDotColor(dot)"></circle>
                 </template>
             </svg>
@@ -122,7 +123,8 @@
                         <span class="toggle__label"><span class="toggle__text">0.5</span></span></label>
                     </div>
                     <div class="check-box"><label class="toggle">
-                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="1" checked = "true">
+                        <input class="toggle__input r-box" type="checkbox" @click="validateCB()" value="1"
+                               checked="true">
                         <span class="toggle__label"><span class="toggle__text" checked>1</span></span></label>
                     </div>
                     <div class="check-box"><label class="toggle">
@@ -146,27 +148,39 @@
 
             </form>
 
-            <div style="padding: 10px">
-                <label v-show="!text_valid" id="error-message" class="err-msg" style="text-transform: uppercase">{{text_err_msg}}</label>
+            <div style="padding: 10px; margin: 10px">
+                <transition name="fade">
+                    <label v-show="!text_valid" id="error-message" class="err-msg msg">{{text_err_msg}}</label>
+                </transition>
             </div>
-            <div style="padding: 10px">
-                <label v-show="!r_valid" id="error-message-R" class="err-msg" style="text-transform: uppercase">{{r_err_msg}}</label>
+            <div style="padding: 10px; margin: 10px">
+                <transition name="fade">
+                    <label v-show="!r_valid" id="error-message-R" class="err-msg msg">{{r_err_msg}}</label>
+                </transition>
             </div>
-            <div id="error-placeholder" class="err-msg" style="color:red; padding: 10px">
-                {{validationError}}
+            <div style="padding: 10px; margin: 10px">
+                <transition name="fade">
+                    <label v-show="validationError != ''" id="error-placeholder" class="msg">
+                        {{validationError}}
+                    </label>
+                </transition>
             </div>
         </div>
         <div class="table-container">
             <table class="res-table">
                 <tr>
-                    <td>X</td>
-                    <td>Y</td>
-                    <td>R</td>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>R</th>
+                    <th>RES</th>
                 </tr>
                 <tr v-for="dot in dotsList">
-                    <td>{{dot.x[0]}}</td>
-                    <td>{{dot.y}}</td>
+                    <td>{{round(dot.x[0])}}</td>
+                    <td>{{round(dot.y)}}</td>
                     <td>{{dot.r}}</td>
+                    <td>{{dot.result}}</td>
+                    <!--                    <td v-if="dot.result">TRUE</td>-->
+                    <!--                    <td v-else>FALSE</td>-->
                 </tr>
             </table>
         </div>
@@ -270,6 +284,10 @@
                 });
             },
 
+            round(num) {
+                return Math.floor(num * 100) / 100;
+            },
+
             deleteUserDots() {
                 axios.post(this.url.dotClear).then((response) => {
                     console.log(response.data);
@@ -295,7 +313,7 @@
         created: function () {
             this.requestAllDots();
         },
-         beforeUpdate: function () {
+        beforeUpdate: function () {
             this.validText();
             this.valid = this.r_valid && this.text_valid
         }
@@ -307,16 +325,18 @@
     }
 
     function checkRectangle(x, y, r) {
-        return (x >= -r) && (x <= 0) && (y >= -0.5 * r) && (y <= 0);
+        return (x >= -r) && (x <= 0) && (y <= 0.5 * r) && (y >= 0);
     }
 
     function checkCircle(x, y, r) {
-        return (x * x + y * y <= r * r / 4) && (x <= 0) && (y >= 0);
+        return (x * x + y * y <= r * r) && (y <= 0) && (x >= 0);
     }
 
     function checkTriangle(x, y, r) {
-        return (-2 * x + r >= y) && (x >= 0) && (y >= 0);
+        // console.log("check triangle", ((-2 * x + r) >= y) && (x >= 0) && (y >= 0));
+        return (y <= (r - 2 * x)) && (x >= 0) && (y >= 0);
     }
+
 
     function getR() {
         let checkboxList = document.querySelectorAll(".r-box");

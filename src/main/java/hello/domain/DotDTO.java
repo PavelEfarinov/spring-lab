@@ -22,6 +22,8 @@ public class DotDTO {
     @Max(value = 2, message = "R must be less than 2")
     private Double r;
 
+    private Boolean result;
+
     DotDTO() {
     }
 
@@ -36,6 +38,7 @@ public class DotDTO {
         this.x.add(d.getX());
         this.y = d.getY();
         this.r = d.getR();
+        this.result = d.isResult();
     }
 
     public List<Double> getX() {
@@ -50,6 +53,10 @@ public class DotDTO {
         return r;
     }
 
+    public Boolean getResult() {
+        return result;
+    }
+
     public void setX(List<Double> x) {
         this.x = x;
     }
@@ -60,5 +67,9 @@ public class DotDTO {
 
     public void setR(Double r) {
         this.r = r;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
     }
 }

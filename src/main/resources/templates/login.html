@@ -18,7 +18,7 @@
             height: 100vh;
             font-family: "Exo", sans-serif;
             color: #fff;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background: linear-gradient(-45deg, #ee7752, #e74131, #d5b75d, #d5a68b);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
@@ -34,13 +34,12 @@
                 background-position: 0% 50%;
             }
         }
-
     </style>
 </head>
 <body>
 <div class="container" id="container">
     <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">Please sign in my site</h2>
+        <h2 class="form-signin-heading">SING IN</h2>
         <div v-if="error != null" class="alert alert-danger">{{err_msg}}</div>
         <div v-if="logout != null" class="alert alert-success">{{logout_msg}}</div>
         <p>
@@ -57,7 +56,7 @@
     </form>
     <form class="form-signin">
         <a href="reg">
-            <button class="btn btn-outline-info btn-block" type="button">Sign up</button>
+            <button class="btn btn-outline-dark btn-block" type="button">Sign up</button>
         </a>
     </form>
 </div>

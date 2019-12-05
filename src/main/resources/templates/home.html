@@ -8,17 +8,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/background.css">
     <link rel="stylesheet" type="text/css" href="/resources/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/resources/css/header.css">
 
     <title>Hello page</title>
+    <style>
+        a:hover{
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<h1>Welcome!</h1>
+<header class='header' data-animate-header-container>
+    <menu class='header-bar' data-animate-header>
+        <a href='https://github.com/GulDilin' class='btn-menu' data-toggle-class='menu-active'>Жэка и Паха</a>
+        <a href='http://www.ifmo.ru/ru/schedule/0/P3212/raspisanie_zanyatiy_P3212.htm' class='btn-search' data-toggle-class='search-active'>Группа P3212</a>
+    </menu>
+</header>
+<div class="content" style="margin: auto">
+    <h1>Welcome!</h1>
 
-<p>Click <a href="main">here</a> to see a greeting.</p>
-<footer class="footer">
-    <span class="name">Гурин Евгений Иванович</span>
-    <span class="variant">Вариант 212006</span>
-    <span class="group">Группа P3212</span>
-</footer>
+    <p>Click <a href="main">here</a> to see a main page.</p>
+</div>
 </body>
 </html>

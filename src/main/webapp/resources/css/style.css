@@ -1,7 +1,8 @@
 * {
-    margin: o;
+    margin: 0;
     padding: 0;
     font-size: 1em;
+    max-width: 100%;
 }
 
 body {
@@ -29,11 +30,6 @@ body {
     font-family: 'Pacifico', cursive;
 }
 
-/*body, html, p, #footer, div {*/
-/*    width: 100%;*/
-/*    text-align: left;*/
-/*}*/
-
 footer {
     align-self: flex-start;
     display: flex;
@@ -59,25 +55,14 @@ footer {
     position: absolute;
 }
 
-/*.plot {*/
-/*    display: flex;*/
-/*    width: 300px;*/
-/*    height: 300px;*/
-/*    !*min-width: 350px;*!*/
-/*    !*min-height: 350px;*!*/
-/*    margin: 1% auto;*/
-/*    background-color: white;*/
-/*    padding: 2%;*/
-/*    border: 3px solid black;*/
-/*    border-radius: 40px;*/
-/*}*/
-.plot{
+.plot {
     background-color: white;
     border: 2px solid #690e90;
     padding: 10px;
     border-radius: 4px;
     margin: 10px auto;
     max-height: 320px;
+    opacity: 0.8;
 }
 
 svg {
@@ -168,35 +153,55 @@ table {
     background-color: #ff33cc;
 }
 
-.table-container{
+.table-container {
     width: 100%;
     padding: 10px;
 }
 
 .res-table {
     width: 100%;
+    max-width: 100%;
     background: #B1AEAE;
     line-height: 2;
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
     margin: 20px auto;
+    opacity: 0.8;
 }
+
 .res-table caption {
     background: #2B2A2A;
 }
-.res-table + tr {
+
+.res-table th {
     background: dimgray;
 }
 
-.err-msg{
+.msg {
     border-radius: 4px;
     width: 100%;
     height: 20px;
     padding: 10px;
+    margin: 10px;
     text-transform: uppercase;
-    background: rgba(255, 98, 97, 0.78);
+}
+
+.err-msg {
+    background: rgba(255, 98, 97, 0.44);
     color: #c9302c;
-    animation: dash 1s 0s linear forwards;
-    transition-duration: 0.2s;
+}
+
+.ok-msg {
+    color: white;
+    background: #23d5ab;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
+{
+    opacity: 0;
 }
