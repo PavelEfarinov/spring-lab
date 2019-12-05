@@ -46,8 +46,7 @@ public class DotController {
     }
 
     @RequestMapping("/clear")
-    @ResponseBody
-    void clear(Principal principal) {
+    public void clear(Principal principal) {
         dotDTOService.deleteUserDots(principal.getName());
     }
 }
