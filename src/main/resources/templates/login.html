@@ -34,14 +34,23 @@
                 background-position: 0% 50%;
             }
         }
+
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+        }
+
+        .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
+        {
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
 <div class="container" id="container">
     <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">SING IN</h2>
-        <div v-if="error != null" class="alert alert-danger">{{err_msg}}</div>
-        <div v-if="logout != null" class="alert alert-success">{{logout_msg}}</div>
+        <h2 class="form-signin-heading" style="text-align: center">SING IN</h2>
+            <div v-if="error != null" class="alert alert-danger">{{err_msg}}</div>
+            <div v-if="logout != null" class="alert alert-success">{{logout_msg}}</div>
         <p>
             <label for="username" class="sr-only">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
